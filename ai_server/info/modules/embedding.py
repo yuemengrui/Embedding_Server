@@ -21,7 +21,7 @@ def support_embedding_model_list(request: Request):
                                      model_name=i['model_name'],
                                      max_seq_length=i['max_seq_length'],
                                      embedding_dim=i['embedding_dim']))
-    return ModelListResponse(data=model_cards)
+    return JSONResponse(ModelListResponse(data=model_cards).dict())
 
 
 @router.api_route(path='/ai/embedding/text', methods=['POST'], summary="文本embedding")
@@ -41,11 +41,11 @@ def text_embedding(request: Request,
                                                             batch_size=EMBEDDING_ENCODE_BATCH_SIZE)
         embeddings = normalize(embeddings, norm='l2')
         embeddings = [x.tolist() for x in embeddings]
-        return EmbeddingResponse(model_name=embedding_model_config['model_name'],
-                                 embedding_type=embedding_model_config['embedding_type'],
-                                 max_seq_length=embedding_model_config['max_seq_length'],
-                                 embedding_dim=embedding_model_config['embedding_dim'],
-                                 embeddings=embeddings)
+        return JSONResponse(EmbeddingResponse(model_name=embedding_model_config['model_name'],
+                                              embedding_type=embedding_model_config['embedding_type'],
+                                              max_seq_length=embedding_model_config['max_seq_length'],
+                                              embedding_dim=embedding_model_config['embedding_dim'],
+                                              embeddings=embeddings).dict())
     except Exception as e:
         logger.error(str({'EXCEPTION': e}) + '\n')
         return JSONResponse(ErrorResponse(errcode=RET.SERVERERR, errmsg=error_map[RET.SERVERERR]).dict(),
