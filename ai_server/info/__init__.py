@@ -1,5 +1,6 @@
 # *_*coding:utf-8 *_*
 import os
+import sys
 import time
 from info.configs import *
 from fastapi import FastAPI
@@ -43,11 +44,15 @@ for embedding_config in deepcopy(EMBEDDING_MODEL_LIST):
     model_name_or_path = embedding_config.pop('model_name_or_path')
     device = embedding_config.pop('device')
 
-    if model_name_or_path:
+    if os.path.exists(model_name_or_path):
         embedding_model = SentenceTransformer(model_name_or_path=model_name_or_path, device=device)
 
         embedding_config.update({"model": embedding_model})
         embedding_model_dict[embedding_config['model_name']] = embedding_config
+
+if embedding_model_dict == {}:
+    logger.error('embedding模型加载失败，程序退出！！！')
+    sys.exit()
 
 from info.modules import register_router
 
