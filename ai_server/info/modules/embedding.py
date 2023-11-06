@@ -2,7 +2,7 @@
 # @Author : YueMengRui
 from fastapi import APIRouter, Request
 from sklearn.preprocessing import normalize
-from info.configs.base_configs import API_LIMIT, EMBEDDING_ENCODE_BATCH_SIZE
+from configs import API_LIMIT, EMBEDDING_ENCODE_BATCH_SIZE
 from info import embedding_model_dict, logger, limiter
 from fastapi.responses import JSONResponse
 from .protocol import ErrorResponse, EmbeddingRequest, ModelCard, ModelListResponse, EmbeddingResponse

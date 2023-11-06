@@ -1,8 +1,13 @@
 # *_*coding:utf-8 *_*
 # @Author : YueMengRui
+import os
 
+FASTAPI_TITLE = 'Embedding_Server'
 FASTAPI_HOST = '0.0.0.0'
 FASTAPI_PORT = 5000
+
+LOG_DIR = 'logs'
+os.makedirs(LOG_DIR, exist_ok=True)
 
 EMBEDDING_ENCODE_BATCH_SIZE = 8
 
