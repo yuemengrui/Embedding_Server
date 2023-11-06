@@ -2,8 +2,8 @@
 import os
 import sys
 import time
+from mylogger import logger
 from configs import EMBEDDING_MODEL_LIST
-from logger import logger
 from fastapi.requests import Request
 from starlette.middleware.cors import CORSMiddleware
 from copy import deepcopy

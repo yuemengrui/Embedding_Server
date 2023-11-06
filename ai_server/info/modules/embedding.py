@@ -1,9 +1,10 @@
 # *_*coding:utf-8 *_*
 # @Author : YueMengRui
+from mylogger import logger
 from fastapi import APIRouter, Request
 from sklearn.preprocessing import normalize
 from configs import API_LIMIT, EMBEDDING_ENCODE_BATCH_SIZE
-from info import embedding_model_dict, logger, limiter
+from info import embedding_model_dict, limiter
 from fastapi.responses import JSONResponse
 from .protocol import ErrorResponse, EmbeddingRequest, ModelCard, ModelListResponse, EmbeddingResponse
 from info.utils.response_code import RET, error_map
