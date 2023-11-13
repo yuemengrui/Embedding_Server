@@ -39,6 +39,7 @@ EMBEDDING_MODEL_LIST = [
     }
 ]
 
+BGE_RERANKER_MODEL_NAME_OR_PATH = ''
 # API LIMIT
 API_LIMIT = {
     "model_list": "120/minute",

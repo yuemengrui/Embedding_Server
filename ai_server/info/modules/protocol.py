@@ -35,3 +35,6 @@ class EmbeddingResponse(BaseModel):
     embedding_dim: int
     embeddings: List
 
+
+class RerankRequest(BaseModel):
+    sentence_pairs: List = Field(description="句子对列表")

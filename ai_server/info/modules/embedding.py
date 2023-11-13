@@ -48,6 +48,6 @@ def text_embedding(request: Request,
                                               embedding_dim=embedding_model_config['embedding_dim'],
                                               embeddings=embeddings).dict())
     except Exception as e:
-        logger.error(str({'EXCEPTION': e}) + '\n')
+        logger.error(str({'EXCEPTION': e}))
         return JSONResponse(ErrorResponse(errcode=RET.SERVERERR, errmsg=error_map[RET.SERVERERR]).dict(),
                             status_code=500)

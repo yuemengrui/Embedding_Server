@@ -3,7 +3,7 @@ import os
 import sys
 import time
 from mylogger import logger
-from configs import EMBEDDING_MODEL_LIST
+from configs import EMBEDDING_MODEL_LIST, BGE_RERANKER_MODEL_NAME_OR_PATH
 from fastapi.requests import Request
 from starlette.middleware.cors import CORSMiddleware
 from copy import deepcopy
@@ -16,6 +16,7 @@ from fastapi.openapi.docs import (
     get_swagger_ui_oauth2_redirect_html,
 )
 from fastapi.staticfiles import StaticFiles
+from info.libs.reranker.bge_reranker import BGEReRanker
 
 limiter = Limiter(key_func=lambda *args, **kwargs: '127.0.0.1')
 embedding_model_dict = {}
@@ -32,6 +33,12 @@ for embedding_config in deepcopy(EMBEDDING_MODEL_LIST):
 if embedding_model_dict == {}:
     logger.error('embedding模型加载失败，程序退出！！！')
     sys.exit()
+
+try:
+    bge_reRanker = BGEReRanker(model_name_or_path=BGE_RERANKER_MODEL_NAME_OR_PATH)
+except Exception as e:
+    logger.error('bge_reranker load error!!! ' + str(e))
+    bge_reRanker = None
 
 
 def app_registry(app):
