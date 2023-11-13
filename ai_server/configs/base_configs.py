@@ -27,6 +27,15 @@ EMBEDDING_MODEL_LIST = [
         "embedding_dim": 1024,
         "model_name_or_path": "",
         "device": "cuda"
+    },
+    {
+        "embedding_type": "text",
+        "model_name": "bge-large-zh-v1.5",
+        "max_seq_length": 512,
+        "embedding_dim": 768,
+        "instruction": "为这个句子生成表示以用于检索相关文章：",
+        "model_name_or_path": "",
+        "device": "cuda"
     }
 ]
 

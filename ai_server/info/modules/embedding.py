@@ -2,7 +2,6 @@
 # @Author : YueMengRui
 from mylogger import logger
 from fastapi import APIRouter, Request
-from sklearn.preprocessing import normalize
 from configs import API_LIMIT, EMBEDDING_ENCODE_BATCH_SIZE
 from info import embedding_model_dict, limiter
 from fastapi.responses import JSONResponse
@@ -39,8 +38,9 @@ def text_embedding(request: Request,
 
     try:
         embeddings = embedding_model_config['model'].encode(sentences=req.sentences,
-                                                            batch_size=EMBEDDING_ENCODE_BATCH_SIZE)
-        embeddings = normalize(embeddings, norm='l2')
+                                                            batch_size=EMBEDDING_ENCODE_BATCH_SIZE,
+                                                            normalize_embeddings=True)
+
         embeddings = [x.tolist() for x in embeddings]
         return JSONResponse(EmbeddingResponse(model_name=embedding_model_config['model_name'],
                                               embedding_type=embedding_model_config['embedding_type'],
