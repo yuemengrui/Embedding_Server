@@ -30,16 +30,25 @@ EMBEDDING_MODEL_LIST = [
     },
     {
         "embedding_type": "text",
-        "model_name": "bge-large-zh-v1.5",
+        "model_name": "bge_large_zh",
         "max_seq_length": 512,
         "embedding_dim": 768,
         "instruction": "为这个句子生成表示以用于检索相关文章：",
+        "model_name_or_path": "",
+        "device": "cuda"
+    },
+    {
+        "embedding_type": "text",
+        "model_name": "gte_large_zh",
+        "max_seq_length": 512,
+        "embedding_dim": 1024,
         "model_name_or_path": "",
         "device": "cuda"
     }
 ]
 
 BGE_RERANKER_MODEL_NAME_OR_PATH = ''
+
 # API LIMIT
 API_LIMIT = {
     "model_list": "120/minute",

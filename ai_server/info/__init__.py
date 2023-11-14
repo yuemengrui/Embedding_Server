@@ -26,12 +26,13 @@ for embedding_config in deepcopy(EMBEDDING_MODEL_LIST):
 
     if os.path.exists(model_name_or_path):
         embedding_model = SentenceTransformer(model_name_or_path=model_name_or_path, device=device)
+        logger.info(f"{embedding_config['model_name']} load successful!")
 
         embedding_config.update({"model": embedding_model})
         embedding_model_dict[embedding_config['model_name']] = embedding_config
 
 if embedding_model_dict == {}:
-    logger.error('embedding模型加载失败，程序退出！！！')
+    logger.error('embedding模型全部加载失败，程序退出！！！')
     sys.exit()
 
 try:
