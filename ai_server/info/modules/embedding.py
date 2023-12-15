@@ -5,7 +5,8 @@ from fastapi import APIRouter, Request
 from configs import API_LIMIT, EMBEDDING_ENCODE_BATCH_SIZE
 from info import embedding_model_dict, limiter
 from fastapi.responses import JSONResponse
-from .protocol import ErrorResponse, EmbeddingRequest, ModelCard, ModelListResponse, EmbeddingResponse
+from .protocol import ErrorResponse, EmbeddingRequest, ModelCard, ModelListResponse, EmbeddingResponse, \
+    TokenCountResponse
 from info.utils.response_code import RET, error_map
 
 router = APIRouter()
@@ -24,15 +25,17 @@ def support_embedding_model_list(request: Request):
     return JSONResponse(ModelListResponse(data=model_cards).dict())
 
 
-@router.api_route(path='/ai/embedding/text', methods=['POST'], summary="文本embedding")
+@router.api_route(path='/ai/embedding/text', methods=['POST'], response_model=EmbeddingResponse,
+                  summary="文本embedding")
 @limiter.limit(API_LIMIT['text_embedding'])
 def text_embedding(request: Request,
                    req: EmbeddingRequest
                    ):
     logger.info(str(req.dict()))
-    embedding_model_name_list = list(embedding_model_dict.keys())
-    if req.model_name is None or req.model_name not in embedding_model_name_list:
-        req.model_name = embedding_model_name_list[0]
+
+    if req.model_name not in list(embedding_model_dict.keys()):
+        return JSONResponse(ErrorResponse(errcode=RET.PARAMERR, errmsg=error_map[RET.PARAMERR]).dict(),
+                            status_code=412)
 
     embedding_model_config = embedding_model_dict[req.model_name]
 
@@ -47,6 +50,30 @@ def text_embedding(request: Request,
                                               max_seq_length=embedding_model_config['max_seq_length'],
                                               embedding_dim=embedding_model_config['embedding_dim'],
                                               embeddings=embeddings).dict())
+    except Exception as e:
+        logger.error(str({'EXCEPTION': e}))
+        return JSONResponse(ErrorResponse(errcode=RET.SERVERERR, errmsg=error_map[RET.SERVERERR]).dict(),
+                            status_code=500)
+
+
+@router.api_route(path='/ai/embedding/token/count', methods=['POST'], response_model=TokenCountResponse,
+                  summary="Embedding token count")
+@limiter.limit(API_LIMIT['text_embedding'])
+def text_embedding_token_count(request: Request,
+                               req: EmbeddingRequest
+                               ):
+    logger.info(str(req.dict()))
+
+    if req.model_name not in list(embedding_model_dict.keys()):
+        return JSONResponse(ErrorResponse(errcode=RET.PARAMERR, errmsg=error_map[RET.PARAMERR]).dict(),
+                            status_code=412)
+
+    embedding_model_config = embedding_model_dict[req.model_name]
+
+    try:
+        token_counts = [len(embedding_model_config['model'].tokenizer.tokenize(s)) for s in req.sentences]
+        return JSONResponse(TokenCountResponse(model_name=embedding_model_config['model_name'],
+                                               token_counts=token_counts).dict())
     except Exception as e:
         logger.error(str({'EXCEPTION': e}))
         return JSONResponse(ErrorResponse(errcode=RET.SERVERERR, errmsg=error_map[RET.SERVERERR]).dict(),

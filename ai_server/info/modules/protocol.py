@@ -38,3 +38,8 @@ class EmbeddingResponse(BaseModel):
 
 class RerankRequest(BaseModel):
     sentence_pairs: List = Field(description="句子对列表")
+
+
+class TokenCountResponse(BaseModel):
+    object: str = 'token_count'
+    token_counts: List[int]
