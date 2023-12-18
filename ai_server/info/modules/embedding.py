@@ -73,7 +73,9 @@ def text_embedding_token_count(request: Request,
     try:
         token_counts = [len(embedding_model_config['model'].tokenizer.tokenize(s)) for s in req.sentences]
         return JSONResponse(TokenCountResponse(model_name=embedding_model_config['model_name'],
-                                               token_counts=token_counts).dict())
+                                               token_counts=token_counts,
+                                               max_seq_length=embedding_model_config['max_seq_length']
+                                               ).dict())
     except Exception as e:
         logger.error(str({'EXCEPTION': e}))
         return JSONResponse(ErrorResponse(errcode=RET.SERVERERR, errmsg=error_map[RET.SERVERERR]).dict(),

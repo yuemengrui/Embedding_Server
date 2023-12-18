@@ -43,3 +43,4 @@ class RerankRequest(BaseModel):
 class TokenCountResponse(BaseModel):
     object: str = 'token_count'
     token_counts: List[int]
+    max_seq_length: int
