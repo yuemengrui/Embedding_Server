@@ -16,10 +16,12 @@ from fastapi.openapi.docs import (
     get_swagger_ui_oauth2_redirect_html,
 )
 from fastapi.staticfiles import StaticFiles
+from info.utils.model_register import register_model_to_server
 from info.libs.reranker.bge_reranker import BGEReRanker
 
 limiter = Limiter(key_func=lambda *args, **kwargs: '127.0.0.1')
 embedding_model_dict = {}
+register_models = []
 for embedding_config in deepcopy(EMBEDDING_MODEL_LIST):
     model_name_or_path = embedding_config.pop('model_name_or_path')
     device = embedding_config.pop('device')
@@ -28,12 +30,16 @@ for embedding_config in deepcopy(EMBEDDING_MODEL_LIST):
         embedding_model = SentenceTransformer(model_name_or_path=model_name_or_path, device=device)
         logger.info(f"{embedding_config['model_name']} load successful!")
 
+        register_models.append(deepcopy(embedding_config))
+
         embedding_config.update({"model": embedding_model})
         embedding_model_dict[embedding_config['model_name']] = embedding_config
 
 if embedding_model_dict == {}:
     logger.error('embedding模型全部加载失败，程序退出！！！')
     sys.exit()
+
+register_model_to_server(register_models)
 
 try:
     bge_reRanker = BGEReRanker(model_name_or_path=BGE_RERANKER_MODEL_NAME_OR_PATH)

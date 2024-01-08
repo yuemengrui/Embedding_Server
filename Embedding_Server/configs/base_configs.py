@@ -4,7 +4,10 @@ import os
 
 FASTAPI_TITLE = 'Embedding_Server'
 FASTAPI_HOST = '0.0.0.0'
-FASTAPI_PORT = 5000
+FASTAPI_PORT = 24613
+
+MODEL_REGISTER_URL = 'http://paimongpt_server:24601/ai/model/register'
+THIS_SERVER_HOST = 'http://paimongpt_embedding_server:' + str(FASTAPI_PORT)
 
 LOG_DIR = 'logs'
 os.makedirs(LOG_DIR, exist_ok=True)
@@ -17,7 +20,7 @@ EMBEDDING_MODEL_LIST = [
         "model_name": "m3e_base",
         "max_seq_length": 512,
         "embedding_dim": 768,
-        "model_name_or_path": "",
+        "model_name_or_path": "/workspace/Models/m3e_base",
         "device": "cuda"
     },
     {
@@ -25,7 +28,7 @@ EMBEDDING_MODEL_LIST = [
         "model_name": "text2vec_large_chinese",
         "max_seq_length": 512,
         "embedding_dim": 1024,
-        "model_name_or_path": "",
+        "model_name_or_path": "/workspace/Models/text2vec_large_chinese",
         "device": "cuda"
     },
     {
@@ -34,7 +37,7 @@ EMBEDDING_MODEL_LIST = [
         "max_seq_length": 512,
         "embedding_dim": 768,
         "instruction": "为这个句子生成表示以用于检索相关文章：",
-        "model_name_or_path": "",
+        "model_name_or_path": "/workspace/Models/bge_large_zh",
         "device": "cuda"
     },
     {
@@ -42,7 +45,7 @@ EMBEDDING_MODEL_LIST = [
         "model_name": "gte_large_zh",
         "max_seq_length": 512,
         "embedding_dim": 1024,
-        "model_name_or_path": "",
+        "model_name_or_path": "/workspace/Models/gte_large_zh",
         "device": "cuda"
     }
 ]
