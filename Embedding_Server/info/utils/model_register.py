@@ -3,9 +3,11 @@
 import requests
 from configs import MODEL_REGISTER_URL, THIS_SERVER_HOST
 from typing import List
+from mylogger import logger
 
 
 def register_model_to_server(models: List):
+    logger.info(f'register model to server')
     for m in models:
         model_name = m.pop('model_name')
         req_data = {

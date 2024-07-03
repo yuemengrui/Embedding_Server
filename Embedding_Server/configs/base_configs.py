@@ -6,6 +6,7 @@ FASTAPI_TITLE = 'Embedding_Server'
 FASTAPI_HOST = '0.0.0.0'
 FASTAPI_PORT = 24613
 
+MODEL_REGISTER = False
 MODEL_REGISTER_URL = 'http://paimongpt_server:24601/ai/model/register'
 THIS_SERVER_HOST = 'http://paimongpt_embedding_server:' + str(FASTAPI_PORT)
 

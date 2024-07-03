@@ -3,7 +3,7 @@ import os
 import sys
 import time
 from mylogger import logger
-from configs import EMBEDDING_MODEL_LIST, BGE_RERANKER_MODEL_NAME_OR_PATH
+from configs import EMBEDDING_MODEL_LIST, BGE_RERANKER_MODEL_NAME_OR_PATH, MODEL_REGISTER
 from fastapi.requests import Request
 from starlette.middleware.cors import CORSMiddleware
 from copy import deepcopy
@@ -42,7 +42,8 @@ if embedding_model_dict == {}:
     logger.error('embedding模型全部加载失败，程序退出！！！')
     sys.exit()
 
-register_model_to_server(register_models)
+if MODEL_REGISTER:
+    register_model_to_server(register_models)
 
 try:
     bge_reRanker = BGEReRanker(model_name_or_path=BGE_RERANKER_MODEL_NAME_OR_PATH)
