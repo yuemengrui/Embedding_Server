@@ -12,7 +12,7 @@ from info.utils.response_code import RET, error_map
 router = APIRouter()
 
 
-@router.api_route(path='/ai/embedding/model/list', methods=['GET'], response_model=ModelListResponse,
+@router.api_route(path='/model/list', methods=['GET'], response_model=ModelListResponse,
                   summary="获取支持的embedding模型列表")
 @limiter.limit(API_LIMIT['model_list'])
 def support_embedding_model_list(request: Request):
@@ -25,7 +25,7 @@ def support_embedding_model_list(request: Request):
     return JSONResponse(ModelListResponse(data=model_cards).dict())
 
 
-@router.api_route(path='/ai/embedding/text', methods=['POST'], response_model=EmbeddingResponse,
+@router.api_route(path='/text', methods=['POST'], response_model=EmbeddingResponse,
                   summary="文本embedding")
 @limiter.limit(API_LIMIT['text_embedding'])
 def text_embedding(request: Request,
@@ -56,7 +56,7 @@ def text_embedding(request: Request,
                             status_code=500)
 
 
-@router.api_route(path='/ai/embedding/token/count', methods=['POST'], response_model=TokenCountResponse,
+@router.api_route(path='/token/count', methods=['POST'], response_model=TokenCountResponse,
                   summary="Embedding token count")
 @limiter.limit(API_LIMIT['text_embedding'])
 def text_embedding_token_count(request: Request,

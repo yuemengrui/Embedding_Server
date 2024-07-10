@@ -11,7 +11,7 @@ from info.utils.response_code import RET, error_map
 router = APIRouter()
 
 
-@router.api_route(path='/ai/retrieval/rerank', methods=['POST'], summary="rerank")
+@router.api_route(path='/rerank', methods=['POST'], summary="rerank")
 @limiter.limit(API_LIMIT['text_embedding'])
 def text_rerank(request: Request,
                 req: RerankRequest
