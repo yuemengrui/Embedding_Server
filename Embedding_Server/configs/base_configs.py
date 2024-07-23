@@ -36,7 +36,7 @@ EMBEDDING_MODEL_LIST = [
         "embedding_type": "text",
         "model_name": "bge_large_zh",
         "max_seq_length": 512,
-        "embedding_dim": 768,
+        "embedding_dim": 1024,
         "instruction": "为这个句子生成表示以用于检索相关文章：",
         "model_name_or_path": "/workspace/Models/bge_large_zh",
         "device": "cuda"
