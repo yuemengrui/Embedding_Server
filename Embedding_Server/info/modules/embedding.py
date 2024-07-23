@@ -44,11 +44,12 @@ def text_embedding(request: Request,
                                                             batch_size=EMBEDDING_ENCODE_BATCH_SIZE,
                                                             normalize_embeddings=True)
 
+        embedding_dim = embeddings.shape[1]
         embeddings = [x.tolist() for x in embeddings]
         return JSONResponse(EmbeddingResponse(model_name=embedding_model_config['model_name'],
                                               embedding_type=embedding_model_config['embedding_type'],
                                               max_seq_length=embedding_model_config['max_seq_length'],
-                                              embedding_dim=embedding_model_config['embedding_dim'],
+                                              embedding_dim=embedding_dim,
                                               embeddings=embeddings).dict())
     except Exception as e:
         logger.error(str({'EXCEPTION': e}))
